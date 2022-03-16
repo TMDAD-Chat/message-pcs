@@ -1,0 +1,36 @@
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: incomingMessagePcs;reprocessMessagePcs
+      bindings:
+        incomingMessagePcs-in-0:
+          destination: incoming-messages
+          group: incoming-messages
+          contentType: application/json
+          consumer:
+            bindQueue: true
+            declareExchange: true
+            queueNameGroupOnly: true
+        incomingMessagePcs-out-0:
+          destination: outgoing-messages
+          group: outgoing-messages
+          contentType: application/jsons
+        reprocessMessagePcs-in-0:
+          destination: reprocess-messages
+          group: reprocess-messages
+          contentType: application/json
+          consumer:
+            bindQueue: true
+            declareExchange: true
+            queueNameGroupOnly: true
+        reprocessMessagePcs-out-0:
+          destination: outgoing-messages
+          group: outgoing-messages
+          contentType: application/json
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
