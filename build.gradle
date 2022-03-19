@@ -27,14 +27,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-stream'
-	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 
 	//REMOVE WHEN DB IS CONNECTED
 	runtimeOnly 'com.h2database:h2'

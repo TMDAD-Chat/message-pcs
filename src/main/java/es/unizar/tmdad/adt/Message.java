@@ -12,5 +12,6 @@ public class Message {
     private String sender;
     private String recipient;
     private RecipientType recipientType;
+    private String creationTimestamp;
 
 }
