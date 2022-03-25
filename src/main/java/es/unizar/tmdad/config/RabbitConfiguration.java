@@ -22,13 +22,7 @@ public class RabbitConfiguration {
     @Value("${chat.exchanges.input-1}")
     private String inputReprocessExchangeName;
 
-    @Value("${chat.queues.input-0:incoming-messages}")
-    private String queueNameIncoming;
-
-    @Value("${chat.queues.input-1:reprocess-messages}")
-    private String queueNameReprocess;
-
-    @Value("${application.name}")
+    @Value("${spring.application.name}")
     private String appName;
 
     @Bean("incoming-queue")
