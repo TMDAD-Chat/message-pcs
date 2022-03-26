@@ -1,0 +1,15 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+
+spring:
+  application:
+    name: "message-pcs"
+
+chat:
+  exchanges:
+    input-0: "incoming-messages"
+    input-1: "reprocess-messages"
+    output: "output-messages"
