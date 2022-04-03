@@ -1,12 +1,12 @@
 package es.unizar.tmdad.mapper;
 
-import es.unizar.tmdad.adt.Message;
-import es.unizar.tmdad.adt.MessageIn;
+import es.unizar.tmdad.adt.MessageList;
+import es.unizar.tmdad.adt.MessageListIn;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
 
-    Message mapMessage(MessageIn msg);
+    MessageList mapMessage(MessageListIn msg);
 
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.unizar.tmdad.adt.Message;
 import es.unizar.tmdad.adt.MessageIn;
+import es.unizar.tmdad.adt.MessageList;
+import es.unizar.tmdad.adt.MessageListIn;
 import es.unizar.tmdad.mapper.MessageMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,18 +29,14 @@ public class MessageListener {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    private MessageIn logs(MessageIn in){
-        log.info("Processing msg {}.", in);
-        return in;
-    }
-
     public void apply(String input) throws JsonProcessingException {
-        MessageIn msg = objectMapper.readValue(input, MessageIn.class);
-        Message output = this.apply(msg);
+        MessageListIn msg = objectMapper.readValue(input, MessageListIn.class);
+        MessageList output = this.apply(msg);
         this.rabbitTemplate.convertAndSend(topicExchangeName, "", this.objectMapper.writeValueAsString(output));
     }
 
-    public Message apply(MessageIn messageInFlux) {
-        return messageMapper.mapMessage(this.logs(messageInFlux));
+    public MessageList apply(MessageListIn messageInFlux) {
+        log.info("Processing msg {}.", messageInFlux);
+        return messageMapper.mapMessage(messageInFlux);
     }
 }
