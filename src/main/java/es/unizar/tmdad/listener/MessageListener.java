@@ -2,8 +2,6 @@ package es.unizar.tmdad.listener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.unizar.tmdad.adt.Message;
-import es.unizar.tmdad.adt.MessageIn;
 import es.unizar.tmdad.adt.MessageList;
 import es.unizar.tmdad.adt.MessageListIn;
 import es.unizar.tmdad.mapper.MessageMapper;
@@ -20,7 +18,7 @@ public class MessageListener {
     private final ObjectMapper objectMapper;
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${chat.exchanges.output:message-pcs}")
+    @Value("${chat.exchanges.output}")
     private String topicExchangeName;
 
     public MessageListener(MessageMapper messageMapper, ObjectMapper objectMapper, RabbitTemplate rabbitTemplate) {
