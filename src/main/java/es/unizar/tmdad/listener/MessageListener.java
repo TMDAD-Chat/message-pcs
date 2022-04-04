@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.unizar.tmdad.adt.MessageList;
 import es.unizar.tmdad.adt.MessageListIn;
 import es.unizar.tmdad.mapper.MessageMapper;
+import es.unizar.tmdad.service.CounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,24 +18,26 @@ public class MessageListener {
     private final MessageMapper messageMapper;
     private final ObjectMapper objectMapper;
     private final RabbitTemplate rabbitTemplate;
+    private final CounterService counterService;
 
     @Value("${chat.exchanges.output}")
     private String topicExchangeName;
 
-    public MessageListener(MessageMapper messageMapper, ObjectMapper objectMapper, RabbitTemplate rabbitTemplate) {
+    public MessageListener(MessageMapper messageMapper, ObjectMapper objectMapper, RabbitTemplate rabbitTemplate, CounterService counterService) {
         this.messageMapper = messageMapper;
         this.objectMapper = objectMapper;
         this.rabbitTemplate = rabbitTemplate;
+        this.counterService = counterService;
     }
 
     public void apply(String input) throws JsonProcessingException {
+        this.counterService.newMessageReceived(input);
         MessageListIn msg = objectMapper.readValue(input, MessageListIn.class);
-        MessageList output = this.apply(msg);
-        this.rabbitTemplate.convertAndSend(topicExchangeName, "", this.objectMapper.writeValueAsString(output));
-    }
+        log.info("Processing msg {}.", msg);
+        MessageList output = messageMapper.mapMessage(msg);
 
-    public MessageList apply(MessageListIn messageInFlux) {
-        log.info("Processing msg {}.", messageInFlux);
-        return messageMapper.mapMessage(messageInFlux);
+        String messageAsString = this.objectMapper.writeValueAsString(output);
+        this.counterService.newMessageSent(messageAsString);
+        this.rabbitTemplate.convertAndSend(topicExchangeName, "", messageAsString);
     }
 }
