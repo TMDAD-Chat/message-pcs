@@ -4,6 +4,17 @@ management:
       exposure:
         include: health,prometheus
 
+server:
+  port: 8443
+  http2:
+    enabled: true
+  ssl:
+    key-store: /opt/message-pcs.p12
+    key-store-password: message-pcs
+    key-store-type: pkcs12
+    key-alias: message-pcs
+    key-password: message-pcs
+
 spring:
   application:
     name: "message-pcs"
